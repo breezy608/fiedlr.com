@@ -118,9 +118,8 @@ main = do
                 biblio  <- getMetadataField matchId "bibliography"
                 nsecs   <- getMetadataField matchId "numbersections"
 
-                csl     <- load $ fromFilePath $ "csl" </> Biblio.cslTemplate <.> "csl"
                 bib     <- loadMaybe $ (biblio >>= (\fn -> Just $ "bib" </> fn <.> "bib"))
-                pan     <- (Biblio.pandocRead csl bib) body
+                pan     <- (Biblio.pandocRead bib) body
 
                 withItemBody (pdfCompile temp nsecs) pan
 
