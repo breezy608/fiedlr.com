@@ -46,8 +46,8 @@ I will then briefly summarize the heated discussion about generating mathematics
 Note that for you to understand this blog post in full detail, you need at least a basic knowledge of logic and proofs. 
 If you are not interested in technical details, you can skip the first sections and read \protect\hyperlink{issues}{the last section}.
 
-To give you an introductory example, I thought about the classical proof in arithmetics that we are taught very early on.
-This is the proof that there are infinitely many prime numbers, let us call this the statement $F$.
+To give you an introductory example, I thought about the classical proof in arithmetic that we are taught very early on.
+This is the proof that there are infinitely many prime numbers.
 The intuition is clear: the opposite would be in contradiction with the prime factorization theorem because you would not have enough primes.
 Without a formal proof, this is not at all so obvious, though.
 I realized that the proof that is often taught is actually proof of negation, not proof by contradiction, and I decided that it might be fun to formalize in Lean.
@@ -62,15 +62,16 @@ In human language, it just means that any natural number can be factored  into p
 \begin{theorem}[Prime Factorization]
 For every $n \in \mathbb{N} > 1$, it holds that $n = q_1^{z_1} \cdot \ldots \cdot q_m^{z_m}$ for some primes $q_1, \ldots, q_m$ (and powers $z_1, \ldots, z_m \in \mathbb{Z}^+$).
 \end{theorem}
-This theorem is the cornerstone of arithmetics, it is one of the reasons why people are so much interested in prime numbers.
-For us to be able to factor anything into primes, the intuition tells us that there must be \emph{always enough} of primes at our disposal. 
+This theorem is the cornerstone of arithmetic, it is one of the reasons why people are so much interested in prime numbers.
+For us to be able to factor anything into primes, the intuition tells us that there must be \emph{always enough} primes at our disposal. 
 Does it really mean there are infinitely many of them?
-The classical proof of our original statement $F$, that there are infinitely many of primes, uses prime factorization theorem like this:
+We will prove the following version of this statement\footnote{this version is in some sense weaker, but this is out of scope now.}:
 \begin{theorem}[Statement F]
-The set of all prime numbers is not finite.
+There is no greatest prime number.
 \end{theorem}
 \begin{proof}
-Assume, for a contradiction, that there are only finitely many prime numbers $p_1, p_2, \ldots, p_n$. (*)
+Assume, for a contradiction, that there is a greatest prime number $p_n = p$.
+This means that there are only finitely many prime numbers $p_1, p_2, \ldots, p_n$, simply list all natural numbers up to $p$ that pass primality test (*)
 Now consider the following number:
 \[x = p_1 \cdot p_2 \cdot \ldots \cdot p_n + 1.\]
 By construction $x > 1$ and thus by prime factorization theorem also $x = q_1^{z_1} \cdot \ldots \cdot q_m^{z_m}$ for some prime numbers $q_1, \ldots, q_m$.
@@ -120,11 +121,11 @@ Say you want to prove \emph{There exists a minimal element of natural numbers $\
 You do not need to say it is $0$ and show why it is so, you can simply assume $\neg L$ and show how it leads to a contradiction with the definition of $\mathbb{N}$.
 This is enough to prove that there is a minimal element while it says absolutely nothing about how $0$ looks.
 
-We cannot go into full detail, but this is a problem for proof assistants such as Lean because proofs are terms that need to be constructed.
-You can add LEM to Lean but the resulting proofs are weaker (again, we cannot go into full detail).
+Lean includes LEM in its standard library, but using it has certain repercussions in Lean.
+We cannot go into full detail here.
 Proving existence should require you to show how to construct the given object, which is actually quite intuitive to expect.
-The way we can enforce this in our proofs is by removing LEM.
-Dropping LEM has some severe consequences and sometimes makes things quite counterintuitive, especially if you are used to them from classical mathematics.
+The way we can enforce this in our proofs is by avoiding LEM.
+Avoiding LEM sometimes makes things quite counterintuitive, especially if you are used to them from classical mathematics.
 However, it poses no problem for us and our statement $F$, because we can still use \emph{proofs of negation}.
 
 \section{Back to Our Statement F}
@@ -139,14 +140,14 @@ Not at all: proving $L \to \bot$ (proving a negation) is different from proving 
 In classical mathematics, what really happens in proofs by contradiction is that since $\neg L \to \bot$ is nothing but $\neg \neg L$, you can simply apply DNE to get $L$. 
 On the other hand, proofs of negation are simply proving $L \to \bot$, which in constructive mathematics is actually the definition of $\neg L$.
 And this is completely consistent with our proof of $F$: we want to prove that there is no greatest prime number, i.e., we want to prove the non-existence of such a number.
-By assuming its existence, we get a contradiction, and thus the entire proof is simply proving the implication $F \to \bot$.
+By assuming its existence, we get a contradiction, and thus the entire proof is simply proving the implication \emph{If there exists a greatest prime number, then we get a contradiction}.
 
 This is not just a mathematician's fancy: you can sense how the proof of F \protect\hyperlink{easyproof}{we saw} is ``concrete'', and very much mechanizable.
 You can tell Lean exactly what to do in this proof, each step is set in stone as a simple transformation.
 The major steps are as follows:
 \begin{enumerate}
-\item You assume a greatest prime number $p$ (intros tactic).
-\item You construct a set of all prime numbers $\texttt{ps} := \{p_1, p_2, \ldots, p_n = p\}$ simply by listing all prime numbers up to $p$.\footnote{for people knowledgeable about Lean, checking if a number is prime is decidable and totality is given by iterating over all naturals.}
+\item You assume a greatest prime number $p$.
+\item You construct a set of all prime numbers $\texttt{ps} := \{p_1, p_2, \ldots, p_n = p\}$ simply by listing all prime numbers up to $p$.\footnote{for people knowledgeable about Lean, checking if a number is prime is decidable and totality is given by iterating over all naturals up to $p$.}
 \item You construct $x$ as shown, by taking the product of $\texttt{ps}$ and incrementing it.
 \begin{itemize}
 \item You prove $x > 1$ and apply prime factorization to $x$.
@@ -154,7 +155,7 @@ The major steps are as follows:
 \end{itemize}
 \item You introduce an in-place lemma $q \mid x \land q \nmid x$ (this is our contradiction).
 \begin{itemize}
-\item You show the left side of the conjunction by pointing $q$ to the factorization $q_1, \ldots, q_n$, and the right side of the conjunction by showing that $q$ is included in $p_1, \ldots, p_n$ and then computing the remainder.
+\item You show the left side of the conjunction by pointing $q$ to the factorization $q_1, \ldots, q_m$, and the right side of the conjunction by showing that $q$ is included in $p_1, \ldots, p_n$ and then computing the remainder.
 \end{itemize}
 \end{enumerate}
 
@@ -177,15 +178,15 @@ You can have a very strong type system, where you can also have variables, quant
 Then your types can specify exactly what you mean, formally, and machine-checkable.
 This is why they are called theorems and why they can be used for mathematics, because the types are actually much more expressive than what you are used to from other programming languages.
 
-The proof language of Lean (PFL) stands side by side with the functional programming language of Lean (PLL) that can be used for normal programming.
+The proof side of Lean (PFL) stands side by side with the functional programming side of Lean (PLL) that can be used for normal programming.
 You use PLL to program normal functions that can have simpler types, like returning a list, and use PFL to prove that functions typecheck with more verbose types, i.e., theorems, that say more about their behavior.
-The simpler types do not need proofs because the Lean type checker can deduce them automatically, the more involved types (theorems), require proofs to typecheck because it would be expensive for Lean to try to deduce it itself.
+The simpler types do not need proofs because the Lean type checker can usually deduce them automatically, the more involved types (theorems) require explicit proofs to typecheck.
 Instead, you have to provide a proof of your own so that Lean can typecheck the theorem fast.
 
-Each major step from our proof example in \protect\hyperlink{negation}{the previous section} can be mapped onto a Lean ``tactic``.
+Each major step from our proof example in \protect\hyperlink{negation}{the previous section} can be mapped onto a Lean ``tactic''.
 Lean tactics are nothing but intelligent constructors for proofs. 
 Some tactics introduce your assumptions, some are doing substitution, some auto-prove equalities, etc.
-You can have a look at the entire formalized proof in Lean \href{/files/theorem.lean}{here}.
+You can have a look at the entire formalized proof in Lean \href{/files/theorem.lean}{here}.\footnote{Strictly speaking, this Lean proof imports classical axioms via Mathlib, which uses them freely, but it could be done without them.}
 I annotated it with human-readable comments.
 You do not need to understand each tactic and step, the important message here is that if you understand the gist of the constructive proof, you understand how you can arrive at the conclusion in Lean.
 This is even simpler nowadays with letting AI agents generate the Lean code.
@@ -208,21 +209,22 @@ You do not need to understand the proof at all, assuming that the Lean checker d
 We just formalized our proof, coming from the world of mathematics into Lean.
 
 The issue with AI-generated math is that the direction is the opposite: the AI agents came up with the Lean proofs first and then they are  translated back into a human language.
-The new results by OpenAI were obtained by using AI agents for a smart search of the proof ``space``.
+The new results by OpenAI were obtained by using AI agents for a smart search of the proof ``space''.
 Think of it like this: proofs are just sentences, and Lean gives you a way to check them against your mathematical theorem. 
 If you had enough time, you could simply try random combination of words and check them one by one, until you arrive at the correct proof.
-So we could (dis)prove Navier-Stokes, in principle, with a brute-force search where you generate all finite proofs first of size 1, then 2, then 3, etc.
-What AI agents can do is that they can search this space much faster and much more clever, they do not generate the sentences randomly.
+In principle, we could (dis)prove Navier-Stokes, assuming a proof exists\footnote{We have to keep in mind G\"odel's incompleteness theorems.}, with a brute-force search where you generate all finite proofs first of size 1, then 2, then 3, etc.
+What AI agents can do is that they can search this space much faster and much more cleverly, they do not generate the sentences randomly.
 
 So what? There are multiple consequences of this, to mention at least three:
 \begin{enumerate}
 \item \textbf{No intuition.} Generated Lean proofs do not need to adhere to any human standards of elegance.
 They do not necessarily need to tell any story at all.
-This is why many mathematicians, after generating a Lean proof with AI, use a different AIs to reconstruct the story that may or may not be there.
-Even Tristan Buckmaster \href{https://www.youtube.com/watch?v=PQYFRuZ5phs}{in a recent interview} called AI generated proofs as one of the ugliest proofs he'd ever seen.
+This is why many mathematicians, after generating a Lean proof with AI, use different AIs to reconstruct the story that may or may not be there.
+Even Tristan Buckmaster \href{https://www.youtube.com/watch?v=PQYFRuZ5phs}{in a recent interview} called AI generated proofs one of the ugliest proofs he'd ever seen.
 \item \textbf{Backward translation might be wrong.} Translations back into English are presumably done mostly by AI, and they can contain errors, or do not need to make that much sense. This actually turned out to be true also in the Navier-Stokes problem, where the English translation of the generated proof contains errors. This does not mean the Lean proof is incorrect, as long as the Lean version was independently verified, but it can give a wrong story to humans about what is going on under the hood.
 Especially if the proofs are so long that you cannot go over them line by line in Lean to get a good sense of them.
-\item \textbf{Skipping the journey.} In the past, mathematicians working on a problem often created whole new areas of mathematics so that they could solve their problems. New theory was often inspired by work on existing problems. This is the main concern that many prominent mathematicians such as \href{https://www.youtube.com/watch?v=svl_1upFpQo}{Terrence Tao} are talking about these days. Delegating the proofs to an AI simply skips this effort, because the search does not need to involve new theory, AI agents are trying simply anything that works to get the proof through. Since reward hacking is a well-known issue in AI, the AI agents are actually motivated in doing so on a foundational level.
+\item \textbf{Skipping the journey.} In the past, mathematicians working on a problem often created whole new areas of mathematics so that they could solve their problems. New theory was often inspired by work on existing problems. This is the main concern that many prominent mathematicians such as \href{https://www.youtube.com/watch?v=svl_1upFpQo}{Terence Tao} are talking about these days. Delegating the proofs to an AI simply skips this effort, because the search does not need to involve new theory, AI agents are trying simply anything that works to get the proof through. Since reward hacking is a well-known issue in AI, the AI agents are actually motivated in doing so on a foundational level.
+\item \textbf{Wrong theorem formalizations}. A Lean formalization of a theorem might be wrong, i.e., not corresponding to what the mathematician intended, especially if it was AI generated.
 \end{enumerate}
 
 I do not know what the solution is, this is what the community will need to figure out.
