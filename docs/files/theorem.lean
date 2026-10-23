@@ -18,6 +18,7 @@ theorem primes : ¬ ∃ p : ℕ, p.Prime ∧ ∀ n : ℕ, n.Prime → n ≤ p :=
   -- (3a) Prove a lemma we need for prime factorization
   -- In fact, prime factorization Nat.exists_prime_and_dvd formalized in Lean
   -- does not require us to show x is not prime, only that x != 1
+  -- In the text we needed x > 1, but this is a technicality now
   have hx : x ≠ 1 := by
     -- Prove that ps.prod > 0 by showing all members are non-zero
     have hpos : 0 < ps.prod := List.prod_pos (fun q hq => by
@@ -25,7 +26,7 @@ theorem primes : ¬ ∃ p : ℕ, p.Prime ∧ ∀ n : ℕ, n.Prime → n ≤ p :=
       exact hq.2.pos)
     -- Prove a linear inequality ps.prod > 0 => ps.prod + 1 > 1
     omega
-  -- (3b) Apply prime factorization to x
+  -- (3b) Apply a weak version of prime factorization to x
   obtain ⟨q, hq, hqx⟩ := Nat.exists_prime_and_dvd hx
 
   -- (4) Derive a contradiction by showing q is and is not a factor of x
