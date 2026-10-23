@@ -56,7 +56,7 @@
             
         
         <p>Everybody who studied mathematics or computer science in a bit more detail should realize that human language suffers from vagueness and ambuiguity. Not only AIs tend to hallucinate, we ourselves tend to phrase things imprecisely. Consider the following prompt:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode markdown"><code class="sourceCode markdown"><a class="sourceLine" id="cb1-1" title="1">Make an app that plays Moonlight Sonata two times.</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Make an app that plays Moonlight Sonata two times.</span></code></pre></div>
 <p>Let’s say the AI is smart enough to ask us what kind of app, on what platform, etc. The AI agent goes ahead and creates the app for us, but the app plays the song three times. Surely the AI must have hallucinated? The answer is that the app is perfectly fine because our request is met: the app plays Moonlight Sonata (at least) two times. A person has to have formal training in order to understand that an agent can decide on its own how to interpret such a sentence. If we don’t understand this distinction in language precision, we cannot possibly know how to delegate mission-critical apps to AI agents. There are two points I will be trying to make:</p>
 <ol type="1">
 <li>The human language <em>alone</em> cannot serve as <em>the basis</em> for app building because it lacks precision.</li>
@@ -69,12 +69,12 @@
 <p>By putting English sentences in a context, you do not necessarily make the space smaller!</p>
 </blockquote>
 <p>Consider the following prompt.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode markdown"><code class="sourceCode markdown"><a class="sourceLine" id="cb2-1" title="1">- <span class="fl">Make an app that plays Moonlight Sonata two times.</span></a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="fl">- The app should not play Moonlight Sonata three times.</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Make an app that plays Moonlight Sonata two times.</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The app should not play Moonlight Sonata three times.</span></code></pre></div>
 <p>The agent goes ahead and creates such an app, but the app plays three times again. Can you see why?</p>
 <p>It’s even worse. More rules can under some contexts lead to a bigger space of possibilities.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode markdown"><code class="sourceCode markdown"><a class="sourceLine" id="cb3-1" title="1">- <span class="fl">Make an app that plays Moonlight Sonata exactly two times.</span></a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="fl">- The app should allow some users to play Moonlight Sonata three times.</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Make an app that plays Moonlight Sonata exactly two times.</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The app should allow some users to play Moonlight Sonata three times.</span></code></pre></div>
 <p>If it’s not clear how this prompt can make the situation worse, let me know in the comments.</p>
 <p>Again, we need to have formal training in logic to understand this. Again and again, AI cannot replace our understanding. If you leave everything to its whims, you are not really building your app but just playing a slot machine. It also doesn’t matter how many AI judges we have because thay also make decisions on their own. How do we get around this?</p>
 <blockquote>
@@ -113,7 +113,7 @@
     
     <section class="footer">
         <div class="line"></div>
-        Read more articles on: <a href="../topics/ai">ai</a>, <a href="../topics/logic">logic</a>, <a href="../topics/verification">verification</a>, <a href="../topics/testing">testing</a>, <a href="../topics/fuzzing">fuzzing</a>, <a href="../topics/specifications">specifications</a>.
+        Read more articles on: <a title="All pages tagged 'ai'." href="../topics/ai" rel="tag">ai</a>, <a title="All pages tagged 'logic'." href="../topics/logic" rel="tag">logic</a>, <a title="All pages tagged 'verification'." href="../topics/verification" rel="tag">verification</a>, <a title="All pages tagged 'testing'." href="../topics/testing" rel="tag">testing</a>, <a title="All pages tagged 'fuzzing'." href="../topics/fuzzing" rel="tag">fuzzing</a>, <a title="All pages tagged 'specifications'." href="../topics/specifications" rel="tag">specifications</a>.
     </section>
     
 </article>

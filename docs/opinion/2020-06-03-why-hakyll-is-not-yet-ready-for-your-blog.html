@@ -48,7 +48,7 @@
         
         
         
-        <br><em>Modified on <span class="modDate" title="Check GitHub for prior versions.">November 19, 2023</span></em>
+        <br><em>Modified on <span class="modDate" title="Check GitHub for prior versions.">October 22, 2026</span></em>
         
     </section>
     <section class="body">
@@ -79,7 +79,7 @@
 <h2 id="embedding-haskell-in-templates">Embedding Haskell in templates</h2>
 <p>Would you like some ad-hoc logic in the templates? You’re out of luck. The templates support trivial <code>if</code> blocks that check for the existence of a <a href="https://jaspervdj.be/hakyll/reference/Hakyll-Web-Template.html">field</a> value, optionally with an <code>else</code> block, plus <code>for</code> loops for ranging over list-ish fields (otherwise it would naturally be really painful to template a list). Great, but think of what happens when you need a new field (almost all the time). You have to <em>recompile</em> the site executable <em>every</em> time. Can you imagine how long that takes?</p>
 <p>I understand that Hakyll tries to keep things simple, but is it surely the only way to make things work? All the more when we have such fruitful things as <a href="https://github.com/ghcjs/ghcjs">GHCJS</a>. Why cannot I put some logic in the templates and make use of it in the macros? I understand I can use JS instead for many things, but it simply doesn’t have access to everything (such as other loaded templates and the page structure). Even an awful language like PHP can do</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode php"><code class="sourceCode php"><a class="sourceLine" id="cb2-1" title="1">Hello World! <span class="dv">1</span> + <span class="dv">1</span> = &lt;<span class="ot">?</span>php <span class="kw">echo</span> <span class="dv">1</span> + <span class="dv">1</span><span class="ot">;</span> <span class="kw">?&gt;</span>.</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode php"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Hello World<span class="op">!</span> <span class="dv">1</span> <span class="op">+</span> <span class="dv">1</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ot">?</span>php <span class="kw">echo</span> <span class="dv">1</span> <span class="op">+</span> <span class="dv">1</span><span class="ot">;</span> <span class="kw">?&gt;</span><span class="op">.</span></span></code></pre></div>
 <p>(yes, the result is <a href="https://en.wikipedia.org/wiki/Principia_Mathematica">indeed 2</a>!)</p>
 <p>This one I naturally didn’t solve as my Pandoc expertise is close to none. If I understand correctly, Pandoc is sent to parse the files with <code>pandocRead</code> for Hakyll. Maybe one would have to go to such lengths as creating a custom Hakyll DSL with a dynamic parser and interpreter in one (that would execute in the case of changes) plus would be able to translate to Pandoc’s meta-language, and that DSL would need to be neutral to every input file (hard task).</p>
 <p>This is a question suitable only for the author of Hakyll himself. There’s <a href="https://www.yesodweb.com">Yesod</a>, even though it’s a server, maybe somehow glue it together with the site watching script? Will there be another tutorial for that or can we finally make it <em>part of Hakyll</em>? I admit this sounds tricky, but Hakyll has no shot at being more usable without this.</p>
@@ -96,7 +96,7 @@
     
     <section class="footer">
         <div class="line"></div>
-        Read more articles on: <a href="../topics/haskell">haskell</a>, <a href="../topics/hakyll">hakyll</a>, <a href="../topics/cons">cons</a>.
+        Read more articles on: <a title="All pages tagged 'haskell'." href="../topics/haskell" rel="tag">haskell</a>, <a title="All pages tagged 'hakyll'." href="../topics/hakyll" rel="tag">hakyll</a>, <a title="All pages tagged 'cons'." href="../topics/cons" rel="tag">cons</a>.
     </section>
     
 </article>
