@@ -2,6 +2,14 @@ This is the source code for [my personal webpage](https://fiedlr.com/).
 
 The webpage falls under regular copyright laws and its code is available here only _as a reference_. This means you should NOT use it as a template for another website. Check [Hakyll's website](https://jaspervdj.be/hakyll) for better examples.
 
+# Installation
+
+You need to have zlib and texlive installed, on Ubuntu this would be:
+```bash
+sudo apt install zlib1g-dev
+sudo apt install texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra
+```
+
 # Features
 
 Here's the list of key things to me that I haven't found in Hakyll and managed to get working only after a few days of research and hard work (I know it might not seem so).
