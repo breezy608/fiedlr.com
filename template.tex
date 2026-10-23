@@ -48,6 +48,7 @@ $endif$
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provides euro and other symbols
   \usepackage{bm} % load after all math to give access to bold math
+  \DeclareUnicodeCharacter{25FB}{\ensuremath{\square}} % pandoc's end-of-proof mark
 \else % if luatex or xelatex
 $if(mathspec)$
   \ifxetex

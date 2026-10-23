@@ -56,7 +56,7 @@ Before we start, let us refresh what the prime factorization theorem is about.
 The prime factorization theorem says that any natural number greater than $1$ is either a prime number or can be expressed as a unique product of prime numbers (obviously unique modulo the order of the multiplicands, as multiplication is commutative).
 In human language, it just means that any natural number can be factored  into primes, i.e.,
 \begin{theorem}[Prime Factorization]
-For every $n \in \mathbb{N} > 1$, it holds that $n = q_1^{z_1} \cdot \ldots \cdot q_m^_{z_m}$ for some primes $q_1, \ldots, q_m$ (and powers $z_1, \ldots, z_m \in \mathbb{Z}^+$).
+For every $n \in \mathbb{N} > 1$, it holds that $n = q_1^{z_1} \cdot \ldots \cdot q_m^{z_m}$ for some primes $q_1, \ldots, q_m$ (and powers $z_1, \ldots, z_m \in \mathbb{Z}^+$).
 \end{theorem}
 This theorem is the cornerstone of arithmetics, it is one of the reasons why people are so much interested in prime numbers.
 For us to be able to factor anything into primes, the intuition tells us that there must be \emph{always enough} of primes at our disposal. 
@@ -66,10 +66,10 @@ The classical proof of our original statement $F$, that there are infinitely man
 Assume, for a contradiction, that there are only finitely many prime numbers $p_1, p_2, \ldots, p_n$. (*)
 Now consider the following number:
 \[x = p_1 \cdot p_2 \cdot \ldots \cdot p_n + 1.\]
-By construction $x > 1$ and thus by prime factorization theorem also $x = q_1^{z_1} \cdot \ldots \cdot q_m^_{z_m}$ for some prime numbers $q_1, \ldots, q_m$.
+By construction $x > 1$ and thus by prime factorization theorem also $x = q_1^{z_1} \cdot \ldots \cdot q_m^{z_m}$ for some prime numbers $q_1, \ldots, q_m$.
 However, the primes $q_1, \ldots, q_m$ are contained in $p_1, \ldots, p_n$ by (*).
 And so by the definition of $x$, clearly $q_i \nmid x$ for all $1 \leq i \leq m$ (we always get a remainder of $1$).
-Thus $q_1, \ldots, q_n$ are factors of $x$ and are not factors of $x$, which is a contradiction.
+Thus $q_1, \ldots, q_m$ are factors of $x$ and are not factors of $x$, which is a contradiction.
 \end{proof}
 
 This proof is usually presented as one being a proof by contradiction: you assume the negation of what you want to prove, and you lead it to a logical contradiction to conclude the original.
