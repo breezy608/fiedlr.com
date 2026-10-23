@@ -5,7 +5,3 @@ _*
 !.htaccess
 !.gitignore
 !.nojekyll
-
-% testing folders
-posts/math
-posts/code
