@@ -2,12 +2,12 @@ code, pre { white-space: pre-wrap; font-family: 'Source Code Pro', monospace; fo
 span.smallcaps { font-variant: small-caps; }
 span.underline { text-decoration: underline; }
 div.column { display: inline-block; vertical-align: top; width: 50%; }
-a.sourceLine { padding: 0 0 0 10px; }
-.numberLines a.sourceLine { padding: 0; }
+pre > code.sourceCode > span { padding: 0 0 0 10px; }
+.numberLines > code.sourceCode > span { padding: 0; }
 
-a.sourceLine { display: inline-block; line-height: 1.2; font-size: 1em; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1em; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.2; font-size: 1em; }
+pre > code.sourceCode > span > a:first-child { pointer-events: none; color: inherit; text-decoration: inherit; }
+pre > code.sourceCode > span:empty { height: 1em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { box-decoration-break: clone; -webkit-box-decoration-break: clone; position: relative; background: none; padding: 0; }
 .nowrap code.sourceCode { white-space: pre; }
@@ -18,16 +18,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode > span { text-indent: -1em; padding-left: 1em; }
 }
 pre {
   padding: 5px;
   overflow: auto;
 }
-pre.numberSource a.sourceLine
+pre.numberSource > code.sourceCode > span
   { position: relative; left: -4.2em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource > code.sourceCode > span > a:first-child::before
+  { content: attr(aria-label);
     position: relative; left: -0.8em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -41,7 +41,7 @@ pre.numberSource { margin-left: 2.8em; border-left: 1px solid #7a7c7d; padding-l
 div.sourceCode
   { color: #cfcfc2; background-color: #232629; }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span { color: #cfcfc2; } /* Normal */
 code span.al { color: #95da4c; } /* Alert */

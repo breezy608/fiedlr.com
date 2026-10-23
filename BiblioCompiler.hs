@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings          #-}
 module BiblioCompiler (
   pandocRead,
   pandocCompile,
@@ -6,33 +7,39 @@ module BiblioCompiler (
 
 import Hakyll
 import System.FilePath
-import Data.Maybe (isJust, fromJust)
+import Data.Maybe (isJust)
 import qualified Data.Map               as M
+import qualified Data.Text              as T
 import           Text.Pandoc
-import           Control.Monad
-import qualified Text.CSL               as CSL
-import           Text.CSL.Pandoc (processCites)
 
 cslTemplate :: String
 cslTemplate = "default"
 
-addMeta :: String -> MetaValue -> Pandoc -> Pandoc
+cslFilePath :: FilePath
+cslFilePath = "csl" </> cslTemplate <.> "csl"
+
+addMeta :: T.Text -> MetaValue -> Pandoc -> Pandoc
 addMeta k v (Pandoc (Meta m) a) = Pandoc (Meta $ M.insert k v m) a
 
 addLinkCitations :: Pandoc -> Pandoc
 addLinkCitations = addMeta "link-citations"          (MetaBool True)
                  . addMeta "reference-section-title" (MetaString "References")
 
+-- Join soft line breaks into spaces like pandoc < 2.17 did
+baseWriterOptions :: WriterOptions
+baseWriterOptions = defaultHakyllWriterOptions { writerWrapText = WrapNone }
+
 writerOptions :: Maybe String -> WriterOptions
-writerOptions Nothing = defaultHakyllWriterOptions
-writerOptions _  = defaultHakyllWriterOptions {
-    writerExtensions = writerExtensions defaultHakyllWriterOptions <> extensionsFromList [
+writerOptions Nothing = baseWriterOptions
+writerOptions _  = baseWriterOptions {
+    writerExtensions = writerExtensions baseWriterOptions <> extensionsFromList [
         Ext_tex_math_dollars, Ext_tex_math_double_backslash, Ext_latex_macros, -- math
         Ext_backtick_code_blocks, Ext_fenced_code_attributes, -- code
         Ext_auto_identifiers, -- references
         Ext_yaml_metadata_block -- additional support for metadata
     ],
-    writerHTMLMathMethod = MathJax ""
+    -- Doublecheck this change, because in Hakyll documentation there is still writerHTMLMathMethod
+    writerMathMethod = MathJax ""
 }
 
 -- Although I've edited the code quite a bit,
@@ -43,36 +50,30 @@ readPandocBiblioWithTransform :: ReaderOptions
                               -> (Pandoc -> Pandoc)
                               -> Item String
                               -> Compiler (Item Pandoc)
-readPandocBiblioWithTransform ropt csl biblio f item = do
-    style <- unsafeCompiler $ CSL.readCSLFile Nothing . toFilePath . itemIdentifier $ csl
-
-    let Biblio refs = itemBody biblio
-    pandoc <- itemBody <$> readPandocWith ropt item
-    let pandoc' = processCites style refs (f pandoc)
-
-    return $ fmap (const pandoc') item
+readPandocBiblioWithTransform ropt csl biblio f item =
+    readPandocWith ropt item >>= processPandocBiblio csl biblio . fmap f
 
 pandocBiblioCompilerWithTransform :: ReaderOptions -> WriterOptions
-                                  -> String -- CSL FilePath
                                   -> String -- BIB FilePath
                                   -> (Pandoc -> Pandoc)
                                   -> Compiler (Item String)
-pandocBiblioCompilerWithTransform ropt wopt cslFileName bibFileName f = do
-    csl <- load $ fromFilePath cslFileName
+pandocBiblioCompilerWithTransform ropt wopt bibFileName f = do
+    csl <- load $ fromFilePath cslFilePath
     bib <- load $ fromFilePath bibFileName
-    liftM (writePandocWith wopt)
+    writePandocWith wopt <$>
         (getResourceBody >>= readPandocBiblioWithTransform ropt csl bib f)
 
-pandocRead :: Item CSL
-           -> Maybe (Item Biblio)  -- use Citations ?
+pandocRead :: Maybe (Item Biblio)  -- use Citations ?
            -> (Item String -> Compiler (Item Pandoc))
-pandocRead _ Nothing = readPandoc
-pandocRead csl (Just bib) =
+pandocRead Nothing = readPandoc
+pandocRead (Just bib) = \item -> do
+    csl <- load $ fromFilePath cslFilePath
     readPandocBiblioWithTransform
         defaultHakyllReaderOptions
         csl
         bib
         addLinkCitations
+        item
 
 pandocCompile :: Maybe String -- use MathJax?
               -> Maybe String -- use Citations?
@@ -86,7 +87,6 @@ pandocCompile mathJax biblioFile nsecs =
     (\biblioFileName ->
         pandocBiblioCompilerWithTransform defaultHakyllReaderOptions
             ((writerOptions mathJax) { writerNumberSections = isJust nsecs })
-            ("csl" </> cslTemplate <.> "csl")
             ("bib" </> biblioFileName <.> "bib")
             addLinkCitations
     ) biblioFile

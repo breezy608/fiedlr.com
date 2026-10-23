@@ -58,6 +58,24 @@ blockquote {
   line-height:2.5rem;
   overflow-wrap:break-word
 }
+div.csl-entry {
+  clear:both
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em
+}
+div.csl-indent {
+  margin-left:2em
+}
 .modDate {
   cursor:help
 }

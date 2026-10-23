@@ -10,15 +10,15 @@ executable site
                   , Helpers
                   , Categories
   build-depends:    base == 4.*
-                  , hakyll == 4.12.*
-                  , pandoc == 2.6.*
-                  , pandoc-citeproc == 0.16.*
-                  , containers == 0.6.*
-                  , filepath == 1.4.*
+                  , hakyll == 4.17.*
+                  , pandoc == 3.11.*
+                  , citeproc == 0.13.*
+                  , containers == 0.7.*
+                  , filepath == 1.5.*
                   , blaze-html == 0.9.*
                   , process == 1.6.*
-                  , text == 1.2.*
+                  , text == 2.1.*
                   , binary == 0.8.*
-                  , bytestring == 0.10.*
+                  , bytestring == 0.12.*
   ghc-options:      -threaded
   default-language: Haskell2010
