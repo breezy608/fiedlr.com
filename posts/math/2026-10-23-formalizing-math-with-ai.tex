@@ -71,7 +71,7 @@ There is no greatest prime number.
 \end{theorem}
 \begin{proof}
 Assume, for a contradiction, that there is a greatest prime number $p_n = p$.
-This means that there are only finitely many prime numbers $p_1, p_2, \ldots, p_n$, simply list all natural numbers up to $p$ that pass primality test (*)
+This means that there are only finitely many prime numbers $p_1, p_2, \ldots, p_n$, simply list all natural numbers up to $p$ that pass primality test (*).
 Now consider the following number:
 \[x = p_1 \cdot p_2 \cdot \ldots \cdot p_n + 1.\]
 By construction $x > 1$ and thus by prime factorization theorem also $x = q_1^{z_1} \cdot \ldots \cdot q_m^{z_m}$ for some prime numbers $q_1, \ldots, q_m$.
@@ -147,11 +147,11 @@ You can tell Lean exactly what to do in this proof, each step is set in stone as
 The major steps are as follows:
 \begin{enumerate}
 \item You assume a greatest prime number $p$.
-\item You construct a set of all prime numbers $\texttt{ps} := \{p_1, p_2, \ldots, p_n = p\}$ simply by listing all prime numbers up to $p$.\footnote{for people knowledgeable about Lean, checking if a number is prime is decidable and totality is given by iterating over all naturals up to $p$.}
+\item You construct a set of all prime numbers $\texttt{ps} := \{p_1, p_2, \ldots, p_n = p\}$ simply by listing all prime numbers up to $p$.\footnote{for people knowledgeable about Lean, checking if a number is prime is decidable and exhaustiveness is given by iterating over all naturals up to $p$.}
 \item You construct $x$ as shown, by taking the product of $\texttt{ps}$ and incrementing it.
 \begin{itemize}
 \item You prove $x > 1$ and apply prime factorization to $x$.
-\item You pick the first factor $q_1$ of $x$, let's call it $q$.
+\item You pick the first (or some) factor $q_1$ of $x$, let's call it $q$. 
 \end{itemize}
 \item You introduce an in-place lemma $q \mid x \land q \nmid x$ (this is our contradiction).
 \begin{itemize}
@@ -178,10 +178,10 @@ You can have a very strong type system, where you can also have variables, quant
 Then your types can specify exactly what you mean, formally, and machine-checkable.
 This is why they are called theorems and why they can be used for mathematics, because the types are actually much more expressive than what you are used to from other programming languages.
 
-The proof side of Lean (PFL) stands side by side with the functional programming side of Lean (PLL) that can be used for normal programming.
-You use PLL to program normal functions that can have simpler types, like returning a list, and use PFL to prove that functions typecheck with more verbose types, i.e., theorems, that say more about their behavior.
+The proof side of Lean stands side by side with the functional programming side of Lean that can be used for normal programming.
+You use Pthe first to program normal functions that can have simpler types, like returning a list, and the latter to prove that functions typecheck with more verbose types, i.e., theorems, that say more about their behavior.
 The simpler types do not need proofs because the Lean type checker can usually deduce them automatically, the more involved types (theorems) require explicit proofs to typecheck.
-Instead, you have to provide a proof of your own so that Lean can typecheck the theorem fast.
+In other words, you have to provide a proof of your own so that Lean can typecheck the theorem.
 
 Each major step from our proof example in \protect\hyperlink{negation}{the previous section} can be mapped onto a Lean ``tactic''.
 Lean tactics are nothing but intelligent constructors for proofs. 
@@ -215,7 +215,7 @@ If you had enough time, you could simply try random combination of words and che
 In principle, we could (dis)prove Navier-Stokes, assuming a proof exists\footnote{We have to keep in mind G\"odel's incompleteness theorems.}, with a brute-force search where you generate all finite proofs first of size 1, then 2, then 3, etc.
 What AI agents can do is that they can search this space much faster and much more cleverly, they do not generate the sentences randomly.
 
-So what? There are multiple consequences of this, to mention at least three:
+So what? There are multiple consequences of this, to mention a few:
 \begin{enumerate}
 \item \textbf{No intuition.} Generated Lean proofs do not need to adhere to any human standards of elegance.
 They do not necessarily need to tell any story at all.
@@ -224,7 +224,7 @@ Even Tristan Buckmaster \href{https://www.youtube.com/watch?v=PQYFRuZ5phs}{in a 
 \item \textbf{Backward translation might be wrong.} Translations back into English are presumably done mostly by AI, and they can contain errors, or do not need to make that much sense. This actually turned out to be true also in the Navier-Stokes problem, where the English translation of the generated proof contains errors. This does not mean the Lean proof is incorrect, as long as the Lean version was independently verified, but it can give a wrong story to humans about what is going on under the hood.
 Especially if the proofs are so long that you cannot go over them line by line in Lean to get a good sense of them.
 \item \textbf{Skipping the journey.} In the past, mathematicians working on a problem often created whole new areas of mathematics so that they could solve their problems. New theory was often inspired by work on existing problems. This is the main concern that many prominent mathematicians such as \href{https://www.youtube.com/watch?v=svl_1upFpQo}{Terence Tao} are talking about these days. Delegating the proofs to an AI simply skips this effort, because the search does not need to involve new theory, AI agents are trying simply anything that works to get the proof through. Since reward hacking is a well-known issue in AI, the AI agents are actually motivated in doing so on a foundational level.
-\item \textbf{Wrong theorem formalizations}. A Lean formalization of a theorem might be wrong, i.e., not corresponding to what the mathematician intended, especially if it was AI generated.
+\item \textbf{Wrong theorem formalizations.} A Lean formalization of a theorem might be wrong, i.e., not corresponding to what the mathematician intended, especially if it was AI generated.
 \end{enumerate}
 
 I do not know what the solution is, this is what the community will need to figure out.
@@ -233,7 +233,7 @@ We have to set new standards, and it is possible we will have to leave the curre
 
 \section{Conclusion}
 
-I showed you a glimpse of what constructive mathematics is, how it maps to Lean, and then 
+I showed you a glimpse of what constructive mathematics is and how it maps to Lean.
 Understanding Lean proofs also helps you understand classical mathematical proofs better.
 There is much less wiggle room, because you can see how each step maps to a formal rule.
 Dropping LEM can be painful in everyday mathematics, but it can lead to very productive results and areas of mathematics.
