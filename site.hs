@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 import           Hakyll
 import           System.FilePath
-import           Data.Maybe (fromJust, isJust)
+import           Data.Maybe (catMaybes, fromJust, isJust)
 
 import Helpers (removeHTMLExtensions, capitalizeFirst, loadMaybe)
 import PdfCompiler
@@ -117,11 +117,13 @@ main = do
                 body    <- getResourceBody
                 biblio  <- getMetadataField matchId "bibliography"
                 nsecs   <- getMetadataField matchId "numbersections"
+                vars    <- catMaybes <$> mapM (\k -> fmap ((,) k) <$> getMetadataField matchId k)
+                               ["colorlinks", "linkcolor", "urlcolor", "citecolor"]
 
                 bib     <- loadMaybe $ (biblio >>= (\fn -> Just $ "bib" </> fn <.> "bib"))
                 pan     <- (Biblio.pandocRead bib) body
 
-                withItemBody (pdfCompile temp nsecs) pan
+                withItemBody (pdfCompile temp nsecs vars) pan
 
         -- Generate static pages
         match "pages/**" $ do
